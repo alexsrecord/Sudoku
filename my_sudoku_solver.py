@@ -9,7 +9,7 @@ def display(array):
             if y == 2 or y== 5:
                 print("|",end=' ')
         if x == 2 or x == 5:
-            print("\n----------------------")
+            print("\n------+-------+-------")
         else:
             print()
     print("******** end ********\n")
@@ -159,22 +159,24 @@ def solve_sudoku(array):
         print(num_tracker)
     return solution_state
 
+# added a main function so it wont run when imported as a module
+def main():
+    valid_input = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    sudoku_state = [['-'] * 9 for _ in range(9)]
 
-valid_input = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-sudoku_state = [['-'] * 9 for _ in range(9)]
+    ## get sudoku start state from file
+    with open("./sudoku_puzzles_csv\sudoku_expert1.txt") as sudoku_file:
+        x = 0
+        for line in sudoku_file:
+            y = 0
+            for char in line.strip().split(','):
+                if char not in valid_input:
+                    exit("Aborting. Invalid Input found: " + char)
+                elif char != '-':
+                    sudoku_state[x][y] = int(char)
+                y += 1
+            x += 1
+    display(solve_sudoku(sudoku_state))
 
-## get sudoku start state from file
-with open("./sudoku_expert1.txt") as sudoku_file:
-    x = 0
-    for line in sudoku_file:
-        y = 0
-        for char in line.strip().split(','):
-            if char not in valid_input:
-                exit("Aborting. Invalid Input found: " + char)
-            elif char != '-':
-                sudoku_state[x][y] = int(char)
-            y += 1
-        x += 1
-
-
-display(solve_sudoku(sudoku_state))
+if __name__ == "__main__":
+    main()
